@@ -1,0 +1,33 @@
+import cv2
+
+from object_detection import ObjectDetection
+
+#initialise object detection
+od = ObjectDetection()
+
+cap = cv2.VideoCapture("videos/los_angeles.mp4")
+
+#show a frame of the video
+while True:
+    ret, frame = cap.read()
+    if not ret:     #breaks if you run out of frames
+        break
+
+    #detect objects in frames
+    (class_ids, scores, boxes) = od.detect(frame)
+    for box in boxes:
+        (x, y, w, h) = box
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    cv2.imshow("Frame", frame)
+    
+    key = cv2.waitKey(1)
+
+    if key == 27:
+        break
+        #if you press esc key breakout
+
+cap.release()
+cv2.destroyAllWindows
+
+ 
